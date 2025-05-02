@@ -1,0 +1,21 @@
+CREATE TABLE formulario_ecoacao (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(100),
+  cpf VARCHAR(20),
+  data_nasc DATE,
+  celular VARCHAR(20),
+  fixo VARCHAR(20),
+  email VARCHAR(100),
+  menor1_nome VARCHAR(100),
+  menor1_data DATE,
+  menor2_nome VARCHAR(100),
+  menor2_data DATE,
+  restricoes_medicas TEXT,
+  restricoes_locomocao TEXT,
+  alergias TEXT,
+  plano_saude VARCHAR(100),
+  contato_emergencia_nome VARCHAR(100),
+  contato_emergencia_parentesco VARCHAR(50),
+  contato_emergencia_telefone VARCHAR(20),
+  data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

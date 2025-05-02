@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulário EcoAção</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; max-width: 800px; }
+    h2 { text-align: center; }
+    p { text-align: justify; }
+    label { display: block; margin-top: 10px; }
+    textarea, input { width: 100%; padding: 5px; margin-top: 3px; }
+    .checkbox { width: auto; }
+    button { margin-top: 20px; margin-right: 10px; padding: 10px 20px; }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <h2>LEIA COM ATENÇÃO</h2>
+
+  <p>
+    Eu, responsável, declaro estar ciente de que a prática de esportes e atividades em meio à natureza envolve riscos à integridade física. 
+    Estou ciente de que a participação na atividade é voluntária, e que os responsáveis pelas atividades prezam pela segurança, mas que 
+    acidentes podem ocorrer mesmo com todas as medidas preventivas adotadas.
+  </p>
+  <p>
+    Declaro também que meu(s) filho(s)/dependente(s) está(ão) apto(s) a participar das atividades propostas e autorizo sua participação.
+  </p>
+
+  <h3>Autorização de uso de imagem</h3>
+  <p>
+    Autorizo a utilização da imagem do(s) menor(es) inscrito(s), em fotos ou vídeos, para fins de divulgação das atividades da EcoAção, 
+    sem fins lucrativos, em redes sociais, sites e materiais institucionais.
+  </p>
+  <label><input class="checkbox" type="checkbox" name="autorizacao_imagem" value="sim" required> Autorizo</label>
+  <label><input class="checkbox" type="checkbox" name="autorizacao_imagem" value="nao" required> Não autorizo</label>
+
+  <h3>Formulário de inscrição</h3>
+
+  <form id="formulario" action="enviar.php" method="POST">
+    <label>Nome completo do responsável: <input type="text" name="nome" required></label>
+    <label>CPF: <input type="text" name="cpf" required></label>
+    <label>Data de nascimento: <input type="date" name="data_nasc" required></label>
+    <label>Telefone celular: <input type="text" name="celular" required></label>
+    <label>Telefone fixo: <input type="text" name="fixo"></label>
+    <label>E-mail: <input type="email" name="email"></label>
+
+    <h4>Menores (preencha se houver)</h4>
+    <label>Nome do menor: <input type="text" name="menor1_nome"></label>
+    <label>Data de nascimento: <input type="date" name="menor1_data"></label>
+
+    <label>Nome do menor: <input type="text" name="menor2_nome"></label>
+    <label>Data de nascimento: <input type="date" name="menor2_data"></label>
+
+    <label>Restrições médicas ou de saúde: <textarea name="restricoes_medicas" required></textarea></label>
+    <label>Restrições de locomoção: <textarea name="restricoes_locomocao" required></textarea></label>
+    <label>Alergias: <textarea name="alergias" required></textarea></label>
+    <label>Plano de saúde: <input type="text" name="plano_saude" required></label>
+
+    <h4>Contato de emergência (obrigatório)</h4>
+    <label>Nome: <input type="text" name="contato_emergencia_nome" required></label>
+    <label>Parentesco: <input type="text" name="contato_emergencia_parentesco" required></label>
+    <label>Telefone: <input type="text" name="contato_emergencia_telefone" required></label>
+
+    <label>Local e Data (Que vai ser realizada a atividade): <input type="text" name="local_data" required placeholder="Ex: São Paulo, 01/05/2025"></label>
+    <label>Assinatura do responsável: <input type="text" name="assinatura" required></label>
+
+    <button type="submit">Enviar ao Banco</button>
+    <button type="button" onclick="gerarPDF()">Baixar PDF</button>
+  </form>
+
+  <script>
+    async function gerarPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const form = document.getElementById('formulario');
+      const dados = new FormData(form);
+      let y = 10;
+
+      doc.setFontSize(12);
+      doc.text("Formulário de Riscos - EcoAção", 10, y);
+      y += 10;
+
+      for (let [chave, valor] of dados.entries()) {
+        doc.text(`${chave}: ${valor}`, 10, y);
+        y += 7;
+        if (y > 280) {
+          doc.addPage();
+          y = 10;
+        }
+      }
+
+      doc.save('formulario-ecoacao.pdf');
+    }
+  </script>
+</body>
+</html>
